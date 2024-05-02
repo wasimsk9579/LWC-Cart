@@ -1,0 +1,140 @@
+<template>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab" tabindex="0" data-step="1" onclick={handleStepClick}>ELIGIBLE DRIVES</div>
+            <div class="tab" tabindex="0" data-step="2" onclick={handleStepClick}> RECRUITMENT STAGE RESULTS </div>
+        </div>
+
+        <template lwc:if={isEligibleDrives}>
+            <template if:false={isDriveAvailable}>
+                <div class="slds-text-align_center slds-p-around_medium slds-border slds-border_top slds-border_bottom">
+                    <p class="slds-text-heading_large slds-text-color_error">No Eligible Drives
+                        Available</p>
+                    <p class="slds-text-body_regular">We currently don't have any suitable placement drives available
+                        for you. We appreciate your interest in seeking
+                        opportunities with REVA. Rest assured, we will notify you once an eligible drive becomes
+                        available.</p>
+                </div>
+            </template>
+            <template if:true={isDriveAvailable}>
+                <section>
+                    <table class="slds-text-heading_small">
+                        <thead>
+                            <tr>
+                                <th> Drive Name </th>
+                                <th> Company </th>
+                                <th> Application Start Date </th>
+                                <th> Application End Date </th>
+                                <th> Event Date </th>
+                                <th> JD </th>
+                                <th> Apply </th>
+                                <th> Admit Card </th>
+                                <th> Upload Offer Letter</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={data} for:item="drive">
+                                <tr key={drive.id}>
+
+                                    <td data-cell="Drive Name">
+
+                                        <p class="slds-text-link pointer-hover" data-id={drive.id}
+                                            onclick={viewResultHandler}>
+                                            <strong data-id={drive.id}>{drive.driveName}</strong>
+                                        </p>
+
+                                    </td>
+                                    <td data-cell="Company">
+                                        <template lwc:if={drive.companyName.isImageRender}>
+                                            <img src={drive.companyName.name} style="height:35px; max-width:70px">
+                                        </template>
+                                        <template lwc:else>
+                                            <strong>{drive.companyName.name}</strong>
+                                        </template>
+                                        <!-- <strong>{drive.companyName}</strong> -->
+                                    </td>
+                                    <td data-cell="Application Start Date">
+                                        <strong>{drive.eventStartDate}</strong>
+                                    </td>
+                                    <td data-cell="Application End Date">
+                                        <strong>{drive.eventEndDate}</strong>
+                                    </td>
+                                    <td data-cell="Event Date"><strong>{drive.eventDate}</strong>
+                                    </td>
+                                    <td data-cell="Job Description">
+                                        <!--  <lightning-button-icon if:true={row.fileData} icon-name="action:preview"
+                                            title="View Document" variant="brand" onclick={handlePreviewClick}
+                                            data-row-id={row.id} size="large"
+                                            class="slds-m-horizontal_auto reva-brand-button slds-m-left_medium"></lightning-button-icon> -->
+                                        <lightning-button-icon icon-name="action:preview" title="View Job Description"
+                                            variant="brand" onclick={handleGetJobDescription}
+                                            data-url={drive.jobDescriptionURL} size="large"
+                                            disabled={drive.isJobDescriptionPreviewDisabled}
+                                            class="slds-m-horizontal_auto reva-brand-button"></lightning-button-icon>
+                                    </td>
+                                    <td data-cell="Apply">
+                                        <lightning-button class="slds-text-body_small reva-brand-button"
+                                            label={drive.applyLabel} variant="brand" data-id={drive.id}
+                                            disabled={drive.isApplied} onclick={applyHandler}>
+                                        </lightning-button>
+                                    </td>
+                                    <td data-cell="Admit Card">
+                                        <lightning-button-icon icon-name="action:download" variant="brand"
+                                            data-id={drive.id} disabled={drive.isDownloadDisable}
+                                            class="reva-brand-button" onclick={downloadHandler}
+                                            alternative-text="Download"></lightning-button-icon>
+                                    </td>
+                                    <td data-cell="Upload Offer Letter">
+                                        <lightning-button-icon icon-name="action:upload" variant="brand"
+                                            class="reva-brand-button" data-id={drive.id}
+                                            disabled={drive.isUploadDisabled} onclick={uploadHandler}
+                                            alternative-text="Upload"></lightning-button-icon>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </section>
+            </template>
+        </template>
+        <template if:true={isSpinner}>
+            <div class="slds-is-relative">
+                <section class="slds-modal slds-fade-in-open">
+                    <lightning-spinner alternative-text="loading..." variant="brand"></lightning-spinner>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open" style="width: 60%; height:50%; margin:auto"></div>
+            </div>
+        </template>
+        <template if:true={isOfferUpload}>
+            <div class="">
+                <div class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={handleModalClose}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                    size="small">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                        </div>
+                        <div class="slds-modal__content slds-p-around_medium">
+                            <lightning-file-upload label="Attach Offer Letter" variant="brand" name="fileUploader"
+                                accept={acceptedFormats} record-id={studentRegDriveId}
+                                onuploadfinished={handleUploadFinished} single>
+                            </lightning-file-upload>
+                        </div>
+                        <footer class="slds-modal__footer"></footer>
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+
+        <template if:true={isResult}>
+            <c-rpl_-reva-interview-results student-reg-drive-id={studentRegDriveId}
+                is-result={isResult}></c-rpl_-reva-interview-results>
+        </template>
+
+    </div>
+</template>

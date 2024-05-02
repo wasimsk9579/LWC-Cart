@@ -1,0 +1,136 @@
+@font-face {
+    font-family: 'NunitoSans';
+    src: url('/sfsites/c/resource/SR_STUDENTPORTALASSETS/StudentPortalAssests/Fonts/NunitoSans/NunitoSans_10pt-Regular.ttf') format('TrueType');
+}
+    *{
+    font-family: 'NunitoSans', 'RobotoSlab', 'Roboto', 'Dosis', Helvetica !important;
+}
+.container{
+    min-height: 100%;
+    background-color: white;
+    padding : 1rem;
+    border: 2px solid var(--reva-brand-color);
+    border-radius: 10px;
+    min-width: 100%;
+}
+
+.tabs{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap:0.5rem;
+    margin-bottom: 1rem;
+    justify-content: flex-start;
+
+}
+
+.tab{
+    font-weight: 750;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    background-color: #FEF3EA;
+    min-height: 2rem;
+    padding: 0.5rem;
+    min-width: 15vw;
+    max-width: 50vw;
+}
+tr{
+    border-top: 4px solid white;
+    font-size: 0.8rem;
+}
+.tab:first-child{
+    background-color: var(--reva-brand-color);
+    color: white;
+}
+section{
+    overflow: auto;
+}
+table {
+    border-collapse: collapse;
+    overflow: auto;
+    width: 100%;
+    border-spacing: 0;
+    background-color: white;
+}
+
+
+table, th, td {
+    /* border-collapse: collapse; */
+    padding: 1rem;
+    text-align: left;
+}
+
+thead th {
+    top: 0;
+    left: 0;
+    background-color: var(--reva-table-heading-background-color);
+   /*  cursor: pointer; */
+    text-transform:uppercase;
+    color: white;
+}
+.pointer-hover :hover{
+    cursor: pointer;
+}
+/* tbody tr:nth-of-type(2n-1) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #E6E6E6;
+    }
+    tbody tr:nth-of-type(2n) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #f5f5f5;
+    } */
+tbody tr{
+    background-color: var(--reva-table-row-background-color) !important;
+}
+
+/* td strong{
+    cursor: pointer;
+}
+ */
+@media (min-width:800px){
+    .tab{
+        font-size: 1rem;
+    }
+}
+@media (max-width: 650px) {
+
+    td{
+        display: grid;
+        grid-template-columns: 21ch auto;
+        gap:0.5rem;
+        padding: 0.5rem 1rem;
+    }   
+
+    td:first-child{
+        padding-top: 2rem;
+    }
+
+    td:last-child{
+        padding-bottom: 2rem;
+    }
+    th{
+        display: none;
+    }
+    td::before{
+        content: attr(data-cell) " : ";
+        font-weight: 700;
+    }
+  
+}
+
+@media (max-width:500px){
+    table {
+    font-size: 12px;
+}
+.container{
+    padding: 0rem;
+}
+.tab{
+    flex: 1;
+}
+
+}
